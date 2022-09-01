@@ -30,5 +30,21 @@
         "body":[
             ".PHONY: phony1 phony2"
         ]
-    }
+    },
+    "loop shell statements": {
+        "description": "Recipe block which loops shell statements for items in a variable",
+        "prefix": ["loop-shell"],
+        "scope": "makefile",
+        "body": [
+            "loop-over-variable-with-shell:",
+            "\t@# ** Loop over [variable] with shell statement(s)",
+            "\t@for item in \\${var-name-here}; do \\",
+            "\t\t# - Each line must have continuation:  \\",
+            "\t\t# - Each command must end with: ; \\",
+            "\t\t# - Env vars need \\$\\$ not \\$ \\",
+            "\t\techo \"\\$\\${item}\"  \\",
+            "\t\t\t| cat -A ; \\",
+            "\tdone",
+        ]
+    },
 }
