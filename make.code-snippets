@@ -47,4 +47,15 @@
             "\tdone",
         ]
     },
+    "phony target new": {
+        "description": "Creates a new .PHONY make target",
+        "prefix": ["phony",".PHONY"], // Multiple prefixes may be defined
+        "scope": "makefile",
+        "body": [
+            ".PHONY: $1",
+            "${1:target}:",
+            "\t@# TODO: explain ${1:target}",
+            "\t$0"
+        ]
+    },
 }
