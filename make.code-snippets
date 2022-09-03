@@ -37,9 +37,36 @@
         "prefix": ["list-targets"],
         "scope": "makefile",
         "body": [
-            ".PHONY: list",
-            "list:",
-            "    @LC_ALL=C \\$(MAKE) -pRrq -f \\$(lastword \\$(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/(^|\n)# Files(\n|\\$\\$)/,/(^|\n)# Finished Make data base/ {if (\\$\\$1 !~ \"^[#.]\") {print \\$\\$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^\\$@\\$\\$'",
+            ".PHONY: list-targets",
+            "list-targets:",
+            "\t@LC_ALL=C \\$(MAKE) -pRrq -f Makefile : 2>/dev/null | awk -v RS= -F: '/(^|\\n)# Files(\\n|\\$\\$)/,/(^|\\n)# Finished Make data base/ {if (\\$\\$1 !~ \"^[#.]\") {print \\$\\$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^\\$@\\$\\$'",
+        ]
+    },
+    "loop shell statements": {
+        "description": "Recipe block which loops shell statements for items in a variable",
+        "prefix": ["loop-shell"],
+        "scope": "makefile",
+        "body": [
+            "loop-over-variable-with-shell:",
+            "\t@# ** Loop over [variable] with shell statement(s)",
+            "\t@for item in \\${var-name-here}; do \\",
+            "\t\t# - Each line must have continuation:  \\",
+            "\t\t# - Each command must end with: ; \\",
+            "\t\t# - Env vars need \\$\\$ not \\$ \\",
+            "\t\techo \"\\$\\${item}\"  \\",
+            "\t\t\t| cat -A ; \\",
+            "\tdone",
+        ]
+    },
+    "phony target new": {
+        "description": "Creates a new .PHONY make target",
+        "prefix": ["phony",".PHONY"], // Multiple prefixes may be defined
+        "scope": "makefile",
+        "body": [
+            ".PHONY: $1",
+            "${1:target}:",
+            "\t@# TODO: explain ${1:target}",
+            "\t$0"
         ]
     },
 }
