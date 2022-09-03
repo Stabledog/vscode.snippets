@@ -27,8 +27,19 @@
     "phony targets declaration": {
         "scope": "makefile",
         "description": "Declare .PHONY target names",
+        "prefix": [".PHONY","phony"],
         "body":[
             ".PHONY: phony1 phony2"
         ]
-    }
+    },
+    "list-targets": {
+        "description": "Add a list-targets target within a makefile.  See also the brilliant description in https://stackoverflow.com/a/26339924/237059",
+        "prefix": ["list-targets"],
+        "scope": "makefile",
+        "body": [
+            ".PHONY: list",
+            "list:",
+            "    @LC_ALL=C \\$(MAKE) -pRrq -f \\$(lastword \\$(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/(^|\n)# Files(\n|\\$\\$)/,/(^|\n)# Finished Make data base/ {if (\\$\\$1 !~ \"^[#.]\") {print \\$\\$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^\\$@\\$\\$'",
+        ]
+    },
 }
