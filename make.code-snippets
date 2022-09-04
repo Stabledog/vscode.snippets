@@ -15,6 +15,21 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
+    "auto help target": {
+        "description": "Generate a help target that lists all other targets",
+        "prefix": ["auto help"],
+        "scope": "makefile",
+        "body": [
+            ".PHONY: help",
+            "help:",
+            "\t@\\$(MAKE) -s --print-data-base --question no-such-target 2>/dev/null | \\",
+            "\tgrep -v  -e '^Makefile' -e '^help' | \\",
+            "\tawk '/^[^.%][-A-Za-z0-9_]*:/ \\",
+            "\t\t\t{ print substr(\\$\\$1, 1, length(\\$\\$1)-1) }' | \\",
+            "\tsort | \\",
+            "\tpr --omit-pagination --width=100 --columns=3",
+        ]
+    },
     "realpath extraction": {
         "scope": "makefile",
         "description": "Get the canonical dir for current Makefile",
