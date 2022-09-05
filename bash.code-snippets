@@ -18,6 +18,15 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
+    "Alias with completion forwarding": {
+        "description": "Adds shell completion for an alias (depends on complete-alias)",
+        "prefix": ["alias", "complete", "forward"],
+        "scope": "shellscript",
+        "body": [
+            "alias ${1:my-alias}='$0http_proxy= https_proxy= git' # Alias with underlying autocompletion support",
+            "complete -F _complete_alias ${1}  # Add completion forwarding"
+        ]
+    },
 	"newScript": {
         "description": "Common basic elements of a new script: die(), main(), etc.",
 		"prefix": ["bashScript"],
