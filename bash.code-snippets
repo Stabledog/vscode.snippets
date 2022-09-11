@@ -100,7 +100,7 @@
         "body": [
             "stub() {",
             "    # Print debug output to stderr.  Call like this:",
-            "    #   stub \\${FUNCNAME[0]}.\\$LINENO item item item",
+            "    #   stub \"\\${FUNCNAME[0]}.\\${LINENO}\" \"\\$@\" \"<Put your message here>\"",
             "    #",
             "    builtin echo -n \"  <<< STUB\" >&2",
             "    for arg in \"\\$@\"; do",
