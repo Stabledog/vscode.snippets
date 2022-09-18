@@ -102,6 +102,7 @@
             "    # Print debug output to stderr.  Call like this:",
             "    #   stub \"\\${FUNCNAME[0]}.\\${LINENO}\" \"\\$@\" \"<Put your message here>\"",
             "    #",
+            "    [[ -n \\$NoStubs ]] && return",
             "    builtin echo -n \"  <<< STUB\" >&2",
             "    for arg in \"\\$@\"; do",
             "        echo -n \"[\\${arg}] \" >&2",
