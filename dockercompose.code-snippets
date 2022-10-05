@@ -15,6 +15,7 @@
 
     "basicService": {
         "description": "Define a basic service with common elements",
+        "scope": "compose",
         "body": [
             "version: \"3.7\"",
             "services:",
@@ -37,13 +38,14 @@
     },
     "bbvpnProxyEnv":{
         "description": "Defines the bbvpn proxy settings",
+        "scope": "compose",
         "prefix":"bbproxy",
         "body":[
             "environment: ",
-            "  - http_proxy=http://proxy.bloomberg.com:81",
-            "  - https_proxy=http://proxy.bloomberg.com:81",
-            "  - no_proxy=.bloomberg.com,10.0.0.0/8,100.0.0.0/8",
-            "  - NODE_EXTRA_CA_CERTS=/etc/pki/ca-trust/source/anchors/bloomberg_rootca_v2.crt"
+            "  http_proxy: http://proxy.bloomberg.com:81",
+            "  https_proxy: http://proxy.bloomberg.com:81",
+            "  no_proxy: .bcs.bloomberg.com,.dev.bloomberg.com,10.0.0.0/8,100.0.0.0/8",
+            "  NODE_EXTRA_CA_CERTS: /etc/pki/ca-trust/source/anchors/bloomberg_rootca_v2.crt"
         ]
     }
 }
