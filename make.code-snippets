@@ -33,10 +33,10 @@
     "realpath extraction": {
         "scope": "makefile",
         "description": "Get the canonical dir for current Makefile",
-        "prefix": ["realpath","readlink","abspath"],
+        "prefix": ["absdir","realpath","readlink","abspath"],
         "body": [
             "# See https://stackoverflow.com/a/73509979/237059",
-            "absdir:=\\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
+            "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
         ]
     },
     "phony targets declaration": {
@@ -73,6 +73,15 @@
             "\tdone",
         ]
     },
+    "define REMAKE": {
+        "description": "Adds a REMAKE def to recursively invoke make with current makefile",
+        "prefix": ["remake"],
+        "scope": "makefile",
+        "body": [
+            "REMAKE := \\$(MAKE) -f \\$(lastword \\$(MAKEFILE_LIST))"
+        ]
+    },
+
     "phony target new": {
         "description": "Creates a new .PHONY make target",
         "prefix": ["phony",".PHONY"], // Multiple prefixes may be defined
