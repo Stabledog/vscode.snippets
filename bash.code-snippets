@@ -43,7 +43,7 @@
 			"}",
             "",
             "stub() {",
-            "   builtin echo \"  <<< STUB[\\$*] >>> \" >&2",
+            "   builtin printf \"  <<< STUB[\\$*] >>> \" >&2",
             "}",
             "main() {",
             "    builtin echo \"args:[\\$*]\" ",
