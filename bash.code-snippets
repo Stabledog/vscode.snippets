@@ -103,12 +103,18 @@
             ""
         ]
     },
-    "bashDebugPS4": {
+    "bashDebugPS4plain": {
         "description": "Enable PS4 for uber-trace of shell statements",
-        "prefix": ["bashDebugPS4"], // Multiple prefixes may be defined
+        "prefix": ["bashDebugPS4plain"], // Multiple prefixes may be defined
+        "body": [
+            "PS4='+\\$?(\\${BASH_SOURCE}:\\${LINENO}): \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
+        ]
+    },
+    "bashDebugPS4color": {
+        "description": "Enable PS4 (with color) for uber-trace of shell statements",
+        "prefix": ["bashDebugPS4color"], // Multiple prefixes may be defined
         "body": [
             "PS4='\\033[0;33m+\\$?(\\${BASH_SOURCE}:\\${LINENO}):\\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
-            "# set -x",
         ]
     },
 
