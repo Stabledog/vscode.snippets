@@ -204,6 +204,27 @@
 			"}"
 		],
 		"description": "Iterate args and interpret them"
-	}
+	},
+    "autocomplete_template": {
+        "description": "Bash completion template",
+        "prefix": ["autocomplete_template"], // Multiple prefixes may be defined
+        // "scope": "shellscript",  // TODO: Set this to the relevant language(s) to make  snippet non-global
+        "body": [
+            "# myfun-autocomplete",
+            "# vim: filetype=sh :",
+            "",
+            "_myfun() { # Shell completion for myfun. Place this file in ~/.bash_completion.d/myfun",
+            "    local cur prev opts",
+            "    COMPREPLY=()",
+            "    cur=\"\\${COMP_WORDS[COMP_CWORD]}\"",
+            "    # The main job is usually to set 'opts' to the set of meaningful commands:",
+            "    opts=\"--help command1 command2\"",
+            "    COMPREPLY=( \\$(compgen -W \"\\${opts}\" -- \"\\${cur}\" ) )",
+            "    return 0",
+            "}",
+            "",
+            "complete -F _myfun myfun",
+        ]
+    },
 }
 
