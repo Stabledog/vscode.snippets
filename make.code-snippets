@@ -57,28 +57,12 @@
             "\t@LC_ALL=C \\$(MAKE) -pRrq -f $TM_FILENAME : 2>/dev/null | awk -v RS= -F: '/(^|\\n)# Files(\\n|\\$\\$)/,/(^|\\n)# Finished Make data base/ {if (\\$\\$1 !~ \"^[#.]\") {print \\$\\$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^\\$@\\$\\$' | tr '\\n' ' '",
         ]
     },
-    "loop shell statements": {
-        "description": "Recipe block which loops shell statements for items in a variable",
-        "prefix": ["loop-shell"],
-        "scope": "makefile",
-        "body": [
-            "loop-over-variable-with-shell:",
-            "\t@# ** Loop over [variable] with shell statement(s)",
-            "\t@for item in \\${var-name-here}; do \\",
-            "\t\t# - Each line must have continuation:  \\",
-            "\t\t# - Each command must end with: ; \\",
-            "\t\t# - Env vars need \\$\\$ not \\$ \\",
-            "\t\techo \"\\$\\${item}\"  \\",
-            "\t\t\t| cat -A ; \\",
-            "\tdone",
-        ]
-    },
     "define REMAKE": {
-        "description": "Adds a REMAKE def to recursively invoke make with current makefile",
+        "description": "Adds a Remake def to recursively invoke make with current makefile",
         "prefix": ["remake"],
         "scope": "makefile",
         "body": [
-            "REMAKE := \\$(MAKE) -f \\$(lastword \\$(MAKEFILE_LIST))"
+            "Remake := \\$(MAKE) -f \\$(lastword \\$(MAKEFILE_LIST))"
         ]
     },
 
@@ -102,5 +86,20 @@
             "Ps4x=\\$(Ps4); set -x;",
         ]
     },
-
+    "xtarget create": {
+        "description": "Create simple target with debug support",
+        "prefix": ["target create"], // Multiple prefixes may be defined
+        "scope": "makefile",
+        "body": [
+            "${1:<enter target name>}:",
+            "\t@# ${2:<Description>}",
+            "\t\\$(Ps4x)  # Display debug output on stderr",
+            "\tset -ue  # Enable exit-on-fail and no-uninit-variables",
+            "\t$0for vv in {a..c}; do",
+            "\t\techo \"\\$\\$vv\"",
+            "\tdone",
+            "",
+        ]
+    },
 }
+
