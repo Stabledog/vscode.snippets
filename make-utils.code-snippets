@@ -1,0 +1,35 @@
+{
+    "make_makefile": {
+        "description": "Create generic makefile",
+        "prefix": ["_make_makefile"], // Multiple prefixes may be defined
+        "body": [
+            "# task Makefile",
+            "SHELL=/bin/bash",
+            ".ONESHELL:",
+            "# TODO: rename absdir to something more meaningful",
+            "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
+            "# For recursion:",
+            "RecurMake := make -f \\$(absdir)Makefile",
+            "# The first target should generally be Config, and its dependencies should",
+            "# only output shell-init text",
+            "",
+            "Config: .cfg.cur",
+            "",
+            "# TODO: rename .cfg.cur to something more meaningful",
+            ".cfg.cur:",
+            "\t@echo RecurMake=\\\"\\$(RecurMake)\\\"",
+            "\techo absdir=\\$(absdir)",
+            "",
+            "bash.here:",
+            "    # Launch a shell after building an environment based on our \"Config\" target",
+            "\t@envfile=/tmp/env-bash-here.\\$\\$\\$\\$",
+            "\t{",
+            "\t\techo \"source \\$\\${HOME}/.bashrc\";",
+            "\t\t\\$(RecurMake) -s",
+            "\t\techo \"Ps1Tail=bash.here\";",
+            "\t\techo \"envfile=\\$\\$envfile\";",
+            "\t} > \\$\\$envfile",
+            "\tbash --rcfile \\$\\$envfile",
+        ]
+    },
+}

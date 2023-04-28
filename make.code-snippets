@@ -93,4 +93,14 @@
             "\t$0"
         ]
     },
+    "ps4x": {
+        "description": "Shell diagnostic prefx Ps4x",
+        "prefix": ["ps4x"],
+        "scope": "makefile",
+        "body": [
+            "Ps4=@PS4='+\\$\\$?| \\$@:\\$\\${LINENO}> '",
+            "Ps4x=\\$(Ps4); set -x;",
+        ]
+    },
+
 }
