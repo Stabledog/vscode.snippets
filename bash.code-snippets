@@ -226,5 +226,23 @@
             "complete -F _myfun myfun",
         ]
     },
+    "printv": {
+        "description": "Add printv() function",
+        "prefix": ["printv"],
+        "body": [
+            "printv ()",
+            "{",
+            "    local vv xpr prf;",
+            "    for vv in \"\\$@\";",
+            "    do",
+            "        [[ \\$( eval declare -p \"\\$vv\" ) =~ ^declare\\ -a ]] && {",
+            "            xpr=\"\\\\${\\${vv}[@]}\";",
+            "            eval 'printf \"%s\\n\" ' \"\\\"\\$xpr\\\"\"",
+            "        } || {",
+            "            eval echo \"\\\\$\\${vv}\"",
+            "        };",
+            "    done",
+            "}",
+        ]
+    },
 }
-
