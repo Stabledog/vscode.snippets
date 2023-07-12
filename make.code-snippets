@@ -62,7 +62,7 @@
         "prefix": ["remake"],
         "scope": "makefile",
         "body": [
-            "Remake := \\$(MAKE) -f \\$(lastword \\$(MAKEFILE_LIST))"
+            "Remake := \\$(MAKE) -s -f \\$(lastword \\$(MAKEFILE_LIST))"
         ]
     },
 
