@@ -15,28 +15,27 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
-    "auto help target": {
-        "description": "Generate a help target that lists all other targets",
-        "prefix": ["auto help"],
-        "scope": "makefile",
-        "body": [
-            ".PHONY: help",
-            "help:",
-            "\t@\\$(MAKE) -s --print-data-base --question no-such-target 2>/dev/null | \\",
-            "\tgrep -v  -e '^Makefile' -e '^help' | \\",
-            "\tawk '/^[^.%][-A-Za-z0-9_]*:/ \\",
-            "\t\t\t{ print substr(\\$\\$1, 1, length(\\$\\$1)-1) }' | \\",
-            "\tsort | \\",
-            "\tpr --omit-pagination --width=100 --columns=3",
-        ]
-    },
     "realpath extraction": {
         "scope": "makefile",
         "description": "Get the canonical dir for current Makefile",
-        "prefix": ["absdir","realpath","readlink","abspath"],
+        "prefix": ["realpath","readlink","abspath"],
         "body": [
             "# See https://stackoverflow.com/a/73509979/237059",
             "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
+        ]
+    },
+    "common header": {
+        "scope": "makefile",
+        "description": "Insert common Makefile header",
+        "prefix": ["header","common"],
+        "body":[
+            "# Makefile for ${1}",
+            "SHELL=/bin/bash",
+            ".ONESHELL:",
+            "MAKEFLAGS += --no-builtin-rules",
+            ""
+            "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
+            ""
         ]
     },
     "phony targets declaration": {
@@ -45,16 +44,6 @@
         "prefix": [".PHONY","phony"],
         "body":[
             ".PHONY: phony1 phony2"
-        ]
-    },
-    "list-targets": {
-        "description": "Add a list-targets target within a makefile.  See also the brilliant description in https://stackoverflow.com/a/26339924/237059",
-        "prefix": ["list-targets"],
-        "scope": "makefile",
-        "body": [
-            ".PHONY: list-targets",
-            "list-targets:",
-            "\t@LC_ALL=C \\$(MAKE) -pRrq -f $TM_FILENAME : 2>/dev/null | awk -v RS= -F: '/(^|\\n)# Files(\\n|\\$\\$)/,/(^|\\n)# Finished Make data base/ {if (\\$\\$1 !~ \"^[#.]\") {print \\$\\$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^\\$@\\$\\$' | tr '\\n' ' '",
         ]
     },
     "define REMAKE": {

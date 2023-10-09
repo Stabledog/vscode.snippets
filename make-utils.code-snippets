@@ -6,6 +6,9 @@
             "# Makefile for ${1}",
             "SHELL=/bin/bash",
             ".ONESHELL:",
+            ".SUFFIXES:",
+            "MAKEFLAGS += --no-builtin-rules",
+            ""
             "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
             "Remake := make -s -f \\$(absdir)Makefile",
             "",
