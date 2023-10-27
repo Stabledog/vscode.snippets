@@ -1,4 +1,12 @@
 {
+    // To use this snippet, you first need a tasks.json file with
+    // the outer elements, at least:
+    // {
+    //     "version": "2.0.0",
+    //     "tasks": [
+    //        -- insert task objects here --
+    //      ]
+    // }
     "_workspace_launch_task": {
         "description": "Launches a shell task when workspace starts",
         "prefix": ["wksp-launch workspace-launch launch task"],
