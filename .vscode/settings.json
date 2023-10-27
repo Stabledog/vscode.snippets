@@ -1,5 +1,5 @@
 {
-    "window.title": "VSCode snippets/",
+    "window.title": "⨔ VSCode snippets/",
     "workbench.colorCustomizations": {
         "terminal.ansiBlack": "#090300",
         "terminal.ansiBlue": "#01A0E4",
@@ -23,7 +23,6 @@
         "terminalCursor.foreground": "#A5A2A2",
         "window.activeBorder": "#00ff00",
         "window.inactiveBorder": "#ff0000",
-        "activityBar.background": "#392C04",
         "titleBar.activeBackground": "#503E05",
         "titleBar.activeForeground": "#FEFAEF"
     }
