@@ -8,9 +8,9 @@
             ".ONESHELL:",
             ".SUFFIXES:",
             "MAKEFLAGS += --no-builtin-rules",
-            ""
+            "",
             "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
-            "Remake := make -s -f \\$(absdir)Makefile",
+            "Remake = make \\$(MAKEFLAGS) -f \\$(realpath \\$(lastword \\$(MAKEFILE_LIST)))",
             "",
             "Config: .cfg.cur",
             "",

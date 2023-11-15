@@ -34,7 +34,8 @@
             ".ONESHELL:",
             ".SUFFIXES:",
             "MAKEFLAGS += --no-builtin-rules --no-print-directory",
-            ""
+            "Remake = make \\$(MAKEFLAGS) -f \\$(realpath \\$(lastword \\$(MAKEFILE_LIST)))",
+            "",
             "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
             ""
         ]
@@ -52,7 +53,7 @@
         "prefix": ["remake"],
         "scope": "makefile",
         "body": [
-            "Remake := \\$(MAKE) -s -f \\$(lastword \\$(MAKEFILE_LIST))"
+            "Remake = make \\$(MAKEFLAGS) -f \\$(realpath \\$(lastword \\$(MAKEFILE_LIST)))",
         ]
     },
 
