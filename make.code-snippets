@@ -33,6 +33,7 @@
             "SHELL=/bin/bash",
             ".ONESHELL:",
             ".SUFFIXES:",
+            ".SHELLFLAGS = -uec",
             "MAKEFLAGS += --no-builtin-rules --no-print-directory",
             "Remake = make \\$(MAKEFLAGS) -f \\$(realpath \\$(lastword \\$(MAKEFILE_LIST)))",
             "",
