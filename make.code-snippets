@@ -35,7 +35,6 @@
             ".SUFFIXES:",
             ".SHELLFLAGS = -uec",
             "MAKEFLAGS += --no-builtin-rules --no-print-directory",
-            "Remake = make \\$(MAKEFLAGS) -f \\$(realpath \\$(lastword \\$(MAKEFILE_LIST)))",
             "",
             "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
             ""
@@ -58,17 +57,6 @@
         ]
     },
 
-    "phony target new": {
-        "description": "Creates a new .PHONY make target",
-        "prefix": ["phony",".PHONY"], // Multiple prefixes may be defined
-        "scope": "makefile",
-        "body": [
-            ".PHONY: $1",
-            "${1:target}:",
-            "\t@# TODO: explain ${1:target}",
-            "\t$0"
-        ]
-    },
     "ps4x": {
         "description": "Shell diagnostic prefx Ps4x",
         "prefix": ["ps4x"],
