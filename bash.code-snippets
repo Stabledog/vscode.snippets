@@ -107,14 +107,14 @@
         "description": "Enable PS4 for uber-trace of shell statements",
         "prefix": ["bashDebugPS4plain"], // Multiple prefixes may be defined
         "body": [
-            "PS4='+\\$?( \\$(realpath \\${BASH_SOURCE}):\\${LINENO} ): \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
+            "PS4='+\\$?( \\$(realpath \\${BASH_SOURCE}):\\${LINENO} 2>/dev/null ): \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
         ]
     },
     "bashDebugPS4color": {
         "description": "Enable PS4 (with color) for uber-trace of shell statements",
         "prefix": ["bashDebugPS4color"], // Multiple prefixes may be defined
         "body": [
-            "PS4='\\033[0;33m+\\$?( \\$(realpath \\${BASH_SOURCE}):\\${LINENO} ):\\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
+            "PS4='\\033[0;33m+\\$?( \\$(realpath \\${BASH_SOURCE}):\\${LINENO} 2>/dev/null ):\\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
         ]
     },
 
