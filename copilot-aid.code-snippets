@@ -16,7 +16,7 @@
 	// 	"description": "Log output to console"
 	// }
     "quiet-mode": {
-        //"scope": "javascript,typescript",
+        //This is mapped to Ctrl+Alt+Q
         "prefix": "quiet",
         "body": [
             "General instruction: please minimize output which is not explicitly requested."
