@@ -35,35 +35,24 @@
             "# ${TM_FILENAME}",
             "",
             "scriptName=\"$(readlink -f \"\\$0\")\"",
-            "scriptDir=$(command dirname -- \"\\${scriptName}\")",
+            "# (if needed) scriptDir=$(command dirname -- \"\\${scriptName}\")",
             "",
             "die() {",
-            "    builtin echo \"ERROR(\\$(basename \\${scriptName})): \\$*\" >&2",
+            "    builtin echo \"ERROR(\\$(basename \"\\${scriptName}\")): \\$*\" >&2",
 			"    builtin exit 1",
 			"}",
             "",
-            "stub() {",
-            "    # Print debug output to stderr.  Recommend to call like this:",
-            "    #   stub \"\\${FUNCNAME[0]}.\\${LINENO}\" \"\\$@\" \"<Put your message here>\"",
-            "    #",
-            "    [[ -n \\$NoStubs ]] && return",
-            "    [[ -n \\$__stub_counter ]] && (( __stub_counter++  )) || __stub_counter=1",
-            "    {",
-            "        builtin printf \"  <=< STUB(%d:%s)\" \\$__stub_counter \"\\$(basename \\$scriptName)\"",
-            "        builtin printf \"[%s] \" \"\\$@\"",
-            "        builtin printf \" >=> \\n\"",
-            "    } >&2",
-            "}",
-            "",
             "main() {",
-            "    stub \"main\" \"\\$@\"",
+            "    PS4='\\033[0;33m+\\$?( $( set +u; [[ -z \"\\$BASH_SOURCE\" ]] || realpath \"\\${BASH_SOURCE[0]}\"):\\${LINENO} ):\\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
+            "    set -ue",
+            "    set -x",
+            "    echo This script needs some content.",
             "}",
             "",
-            "[[ -z \\${sourceMe} ]] && {",
-            "    stub \"\\${FUNCNAME[0]}.\\${LINENO}\" \"calling main()\" \"\\$@\"" ,
+            "if [[ -z \"\\${sourceMe}\" ]]; then",
             "    main \"\\$@\"",
             "    builtin exit",
-            "}",
+            "fi",
             "command true",
             ""
 		]
@@ -107,14 +96,14 @@
         "description": "Enable PS4 for uber-trace of shell statements",
         "prefix": ["bashDebugPS4plain"], // Multiple prefixes may be defined
         "body": [
-            "PS4='+\\$?( \\$(realpath \\${BASH_SOURCE}):\\${LINENO} 2>/dev/null ): \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
+            "PS4='+\\$?( $( set +u; [[ -z \"\\$BASH_SOURCE\" ]] || realpath \"\\${BASH_SOURCE[0]}\"):\\${LINENO} ): \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
         ]
     },
     "bashDebugPS4color": {
         "description": "Enable PS4 (with color) for uber-trace of shell statements",
         "prefix": ["bashDebugPS4color"], // Multiple prefixes may be defined
         "body": [
-            "PS4='\\033[0;33m+\\$?( \\$(realpath \\${BASH_SOURCE}):\\${LINENO} 2>/dev/null ):\\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
+            "PS4='\\033[0;33m+\\$?( $( set +u; [[ -z \"\\$BASH_SOURCE\" ]] || realpath \"\\${BASH_SOURCE[0]}\"):\\${LINENO} ):\\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}(): }'",
         ]
     },
 
