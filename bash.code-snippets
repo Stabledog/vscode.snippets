@@ -95,14 +95,14 @@
         "description": "Enable PS4 for uber-trace of shell statements",
         "prefix": ["bashDebugPS4plain"], // Multiple prefixes may be defined
         "body": [
-            "PS4='$( set +u; [[ -z \"\\$BASH_SOURCE\" ]] || realpath \"\\${BASH_SOURCE[0]}\"):\\${LINENO} +\\$? \\${FUNCNAME[0]:+\\${FUNCNAME[0]}()| }'",
+            "PS4='$( exec 2>/dev/null; set +u; bx=\"\\${BASH_SOURCE[0]}\"; [[ -z \"\\$bx\" ]] || realpath -- \"\\$bx\" || echo \"\\$bx\"):\\${LINENO} +\\$? \\${FUNCNAME[0]:+\\${FUNCNAME[0]}()| }'",
         ]
     },
     "bashDebugPS4color": {
         "description": "Enable PS4 (with color) for uber-trace of shell statements",
         "prefix": ["bashDebugPS4color"], // Multiple prefixes may be defined
         "body": [
-            "PS4='\\033[0;33m$( set +u; [[ -z \"\\$BASH_SOURCE\" ]] || realpath \"\\${BASH_SOURCE[0]}\"):\\${LINENO} +\\$? \\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}()| }'",
+            "PS4='\\033[0;33m$(exec 2>/dev/null;set +u;bx=\"\\${BASH_SOURCE[0]}\"; [[ -z \"\\$bx\" ]] || realpath -- \"\\$bx\" || echo \"\\$bx\"):\\${LINENO} +\\$? \\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}()| }'",
         ]
     },
 
