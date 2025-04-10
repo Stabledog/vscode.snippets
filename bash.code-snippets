@@ -56,25 +56,6 @@
             ""
 		]
 	},
-    "makeCanonpath": {
-        "description": "Create canonpath() definition",
-        "prefix": ["canonpath"],
-        "scope": "shellscript",
-        "body": [
-            "canonpath() {",
-            "    builtin type -t realpath.sh &>/dev/null && {",
-            "        realpath.sh -f \"\\$@\"",
-            "        return",
-            "    }",
-            "    builtin type -t readlink &>/dev/null && {",
-            "        command readlink -f \"\\$@\"",
-            "        return",
-            "    }",
-            "    # Fallback: Ok for rough work only, does not handle some corner cases:",
-            "    ( builtin cd -L -- \"\\$(command dirname -- \\$0)\" || exit; builtin echo \"\\$(command pwd -P)/\\$(command basename -- \\$0)\" )",
-            "}",
-        ]
-    },
     "sourceMeRun": {
         "description": "Include sourceMeRun.taskrc",
         "prefix": ["bpoint", "sourceMeRun"],
@@ -145,27 +126,6 @@
 		],
 		"description": "Terminate shell with error 1 and message"
 	},
-    "python3_detector": {
-        "prefix": "python3",
-        "scope": "shellscript",
-        "body": [
-            "python3() {",
-            "\t[[ -n ${BEST_PY3} ]] && { \"\\$BEST_PY3\" \"\\$@\" ; return; }",
-            "\tlocal cand;",
-            "\tfor cand in python3.{10,9,8,7} python3; do",
-            "\t\tlocal py_cand=\"\\$( which ${cand} )\"",
-            "\t\t\"\\$py_cand\" -c 'import termios' &>/dev/null || \\",
-            "\t\t\tcontinue  # We don't want a dos/windows version",
-            "\t\tBEST_PY3=\"${py_cand}\"",
-            "\t\tbreak",
-            "\tdone",
-            "\t[[ -z \"\\$BEST_PY3\" ]] && { echo \"ERROR: no python3 on path\" >&2; return;  }",
-            "\t\"\\$BEST_PY3\" \"\\$@\"",
-            "}",
-            ""
-        ],
-        "description": "Detect installed version of python3 and then invoke it"
-    },
 	"parseArgs": {
 		"prefix": "parseArgs",
         "scope": "shellscript",
