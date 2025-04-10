@@ -36,6 +36,9 @@
             ".SHELLFLAGS = -uec",
             "MAKEFLAGS += --no-builtin-rules --no-print-directory",
             "",
+            "#\tPS4=$(PS4x)  # <-- Copy/uncomment this in recipe to enable smart PS4 ",
+            "PS4x='$$( _0=$$?; exec 2>/dev/null; echo \"$(realpath $(lastword $(MAKEFILE_LIST)))|$@+\\$\\${LINENO} ^\\$\\$_0 $${FUNCNAME[0]:-?}()=>\" ) '",
+            "",
             "absdir := \\$(dir \\$(realpath \\$(lastword \\$(MAKEFILE_LIST))))",
             ""
         ]
@@ -57,24 +60,23 @@
         ]
     },
 
-    "ps4x": {
-        "description": "Shell diagnostic prefx Ps4x",
-        "prefix": ["ps4x"],
+    "PS4x": {
+        "description": "Recipe diagnostic helper ",
+        "prefix": ["ps4x","PS4x"],
         "scope": "makefile",
         "body": [
-            "PS4x='$$( exec 2>/dev/null; set +u; bx=\"$${BASH_SOURCE[0]:-_unk_}\"; [[ -z \"$$$bx\" ]] || realpath -- \"$$$bx\" || echo \"$$$bx\"):$$$LINENO +$$? $${FUNCNAME[0]:+$${FUNCNAME[0]}()| }'",
-            "#  PS4=$(PS4x)  # Add to recipes as needed"
+            "#\tPS4=$(PS4x)  # <-- Copy/uncomment this in recipe to enable smart PS4 ",
+            "PS4x='$$( _0=$$?;_1=\"\\$(notdir \\$@)\";_2=\"$(realpath $(lastword $(MAKEFILE_LIST)))\"; exec 2>/dev/null; echo \"\\$\\${_2}|\\$\\${_1}@+\\$\\${LINENO} ^\\$\\$_0 $${FUNCNAME[0]:-?}()=>\" ) '"
         ]
     },
     "xtarget create": {
         "description": "Create simple target with debug support",
-        "prefix": ["target create"], // Multiple prefixes may be defined
+        "prefix": ["target create","xtarget"], // Multiple prefixes may be defined
         "scope": "makefile",
         "body": [
             "${1:<enter target name>}:",
             "\t@# ${2:<Description>}",
-            "\t\\$(Ps4x)  # Display debug output on stderr",
-            "\tset -ue  # Enable exit-on-fail and no-uninit-variables",
+            "\tPS4=\\$(PS4x)",
             "\t$0for vv in {a..c}; do",
             "\t\techo \"\\$\\$vv\"",
             "\tdone",
