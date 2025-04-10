@@ -71,7 +71,7 @@
             "        return",
             "    }",
             "    # Fallback: Ok for rough work only, does not handle some corner cases:",
-            "    ( builtin cd -L -- \"\\$(command dirname -- \\$0)\"; builtin echo \"\\$(command pwd -P)/\\$(command basename -- \\$0)\" )",
+            "    ( builtin cd -L -- \"\\$(command dirname -- \\$0)\" || exit; builtin echo \"\\$(command pwd -P)/\\$(command basename -- \\$0)\" )",
             "}",
         ]
     },
@@ -93,18 +93,18 @@
     },
     "bashDebugPS4plain": {
         "description": "Enable PS4 for uber-trace of shell statements",
-        "prefix": ["bashDebugPS4plain"], // Multiple prefixes may be defined
+        "prefix": ["bashDebugPS4plain","ps4x"], // Multiple prefixes may be defined
         "body": [
             "#shellcheck disable=2154",
-            "PS4='$( exec 2>/dev/null; set +u; bx=\"\\${BASH_SOURCE[0]:-_unk_}\"; [[ -z \"\\$bx\" ]] || realpath -- \"\\$bx\" || echo \"\\$bx\"):\\${LINENO} +\\$? \\${FUNCNAME[0]:+\\${FUNCNAME[0]}()| }'",
+            "PS4='$( _0=$?; exec 2>/dev/null; realpath -- \"${BASH_SOURCE[0]:-?}:\\${LINENO} ^\\$_0 ${FUNCNAME[0]:-?}()=>\" ) '"
         ]
     },
     "bashDebugPS4color": {
         "description": "Enable PS4 (with color) for uber-trace of shell statements",
-        "prefix": ["bashDebugPS4color"], // Multiple prefixes may be defined
+        "prefix": ["bashDebugPS4color","ps4y"], // Multiple prefixes may be defined
         "body": [
             "#shellcheck disable=2154",
-            "PS4='\\033[0;33m$(exec 2>/dev/null;set +u;bx=\"\\${BASH_SOURCE[0]:-_unk_}\"; [[ -z \"\\$bx\" ]] || realpath -- \"\\$bx\" || echo \"\\$bx\"):\\${LINENO} +\\$? \\033[0m \\${FUNCNAME[0]:+\\${FUNCNAME[0]}()| }'",
+            "PS4='\\033[0;33m$( _0=$?;set +e;exec 2>/dev/null;realpath -- \"${BASH_SOURCE[0]:-?}:\\${LINENO} \\033[0;35m^\\$_0\\033[32m ${FUNCNAME[0]:-?}()=>\" )\\033[;0m '" 
         ]
     },
 
