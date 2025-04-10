@@ -62,8 +62,8 @@
         "prefix": ["ps4x"],
         "scope": "makefile",
         "body": [
-            "Ps4=@PS4='+\\$\\$?| \\$@:\\$\\${LINENO}> '",
-            "Ps4x=\\$(Ps4); set -x;",
+            "PS4x='$$( exec 2>/dev/null; set +u; bx=\"$${BASH_SOURCE[0]:-_unk_}\"; [[ -z \"$$$bx\" ]] || realpath -- \"$$$bx\" || echo \"$$$bx\"):$$$LINENO +$$? $${FUNCNAME[0]:+$${FUNCNAME[0]}()| }'",
+            "#  PS4=$(PS4x)  # Add to recipes as needed"
         ]
     },
     "xtarget create": {
