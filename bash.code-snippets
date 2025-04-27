@@ -103,6 +103,18 @@
 		],
 		"description": "Terminate shell with error 1 and message"
 	},
+    "cleanup_trap": {
+        "prefix": "cleanup_trap",
+        "scope": "shellscript",
+        "description": "Setup trap for resource cleanup",
+        "body" : [
+            "__cleanup_${label}() {",
+            "    echo __cleanup_${label} invoked 2>/dev/null; ",
+            "    # rm -rf $tmp1 || :",
+            "}",
+            "trap '__cleanup_${label}; trap - EXIT RETURN;' EXIT RETURN"
+        ]
+    },
 	"parseArgs": {
 		"prefix": "parseArgs",
         "scope": "shellscript",
