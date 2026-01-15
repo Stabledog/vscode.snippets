@@ -1,49 +1,56 @@
 # AGENTS.md
-# Guidance for AI agents in .../AppData/Roaming/Code/User
+# Guidance for AI agents in .../Code/User
 
 ## Overview
 
 This directory contains VS Code user settings managed across multiple environments (personal and work) with manual branch synchronization. The configuration is complex and requires careful handling to avoid conflicts and premature application of changes.
 
+- The dir name `.../Code/User` refers to "whatever dir VS Code uses as the parent for `snippets/` in the current environment."
+    - The `.../Code/User` dir is referred to as the "HOT dir" in this context, because the user's VS Code auto-loads changes immediately if they occur in the HOT directory.
+- VS Code has a variety of ways of choosing the HOT dir depending on system context.
+
 ## Repository Structure
 
 ### Version-Controlled Files
 The following files and directories are tracked in git:
-- `settings.json` - Main VS Code settings
-- `keybindings.json` - Custom keyboard shortcuts
-- `tasks.json` - Task definitions
-- `Makefile` - Build/maintenance automation
-- `README.md` - Documentation
-- `settings-bootstrapper.json` - Bootstrap configuration
-- `AGENTS.md` - This file (AI agent guidance)
+- The settings canonical storage is https://github.com/Stabledog/vscode.settings
+- Key files:
+    - `AGENTS.md` - This file (AI agent guidance, in the HOT dir it's a actually a symlink to `snippets/AGENTS-User.md`)
+    - `settings.json` - Main VS Code settings
+    - `keybindings.json` - Custom keyboard shortcuts
+    - `tasks.json` - Task definitions
+    - `Makefile` - Build/maintenance automation
+    - `README.md` - Documentation
+    - `settings-bootstrapper.json` - Bootstrap configuration
 
 ### Ignored Content
-Everything else in this directory is `.gitignore`d, including:
-- `snippets/` - Maintained in a separate GitHub repo and synced into place during environment setup. Unlike the main configuration files, snippets do not require multi-branch management or complex reconciliation. Standard git push/pull operations and basic conflict resolution are sufficient for snippet maintenance.
-- `globalStorage/`
-- `History/`
-- `workspaceStorage/`
+Everything else in the HOT directory is `.gitignore`d, including:
+- `snippets/`: This dir is maintained in a separate GitHub repo and synced into place during environment setup. (Unlike the main configuration files, snippets do not require multi-branch management or complex reconciliation. Standard git push/pull operations and basic conflict resolution are sufficient for snippet maintenance.)
+    - The snippets canonical storage is https://github.com/Stabledog/vscode.snippets
+- `globalStorage/`, `History/`, `workspaceStorage/`: VS Code state files, do not touch
 - Extension-specific files
 - Other VS Code generated content
 
 ## Critical Rules
 
 ### 1. JSON Sorting Requirement
-**ALL JSON files MUST be kept sorted** to minimize noise in diffs when comparing branches.
+**ALL source-controlled JSON files MUST be kept sorted** to minimize noise in diffs when comparing branches.
 
 - Sort settings alphabetically by key at all levels
-- Maintain consistent formatting (4-space indentation)
+- Maintain consistent formatting (4-spaces per indent level)
 - This is critical for clean branch comparisons and merges
 
-### 2. Edit Location Protocol
-**DO NOT edit settings.json directly in this directory during reconciliation work.**
+- Use `jq` for json queries / maintenance.  If it is not installed, alert user.  Never try to do a jit-install of `jq`
 
-Why: Changes to `settings.json` are immediately picked up by the hosting VS Code environment, which can cause premature reactions and instability since we're using VS Code itself to edit the settings.
+### 2. HOT dir change protocol
+**DO NOT edit settings.json directly in the HOT directory during reconciliation work.**
+
+Why: Changes to `settings.json` in that dir are immediately picked up by the hosting VS Code environment, which can cause premature reactions and instability since we're using VS Code itself to edit the settings.
 
 **Workflow:**
-1. Perform change reconciliation in a **separate directory** (not `~/AppData/Roaming/Code/User`)
-2. Push changes to GitHub from the separate directory
-3. Pull changes back into `~/AppData/Roaming/Code/User` when ready
+1. Perform settings change reconciliation in a **separate temp directory**
+2. Create the temp directory and use `git clone [HOT dir]` to populate it
+3. In the HOT dir, add a remote named 'tmp-[random number]' which refers to the temp dir in step 2. This allows us to pull changes from the temp dir back into the HOT dir after reconciliation but before pushing to github.
 
 ### 3. Branch Synchronization Strategy
 
@@ -51,6 +58,9 @@ Why: Changes to `settings.json` are immediately picked up by the hosting VS Code
 - Maintain separate branches for personal and work environments
 - Each environment may have parameters that are problematic for other environments
 - Manual synchronization is required between branches
+- Each branch should have a `dont-merge-settings` file which lists the keys that should not be imported from other branches.
+    - Keys are regex patterns like `editor\.vim\.badKey.*`
+    - `dont-merge-settings` has one pattern per line.
 
 **Synchronization Process:**
 1. Changes can be made in ANY environment
@@ -58,49 +68,26 @@ Why: Changes to `settings.json` are immediately picked up by the hosting VS Code
    - Identify environment-specific settings that should NOT be merged
    - Carefully reconcile differences
    - Ensure JSON sorting is maintained
-   - Test in target environment after merge
 
-### 4. Environment-Specific Considerations
-
-When reviewing or modifying settings, be aware that:
-- Some settings may be work-specific (paths, proxies, enterprise tools)
-- Some settings may be personal-environment-specific
-- Always ask or note when a setting appears environment-dependent
 
 ## AI Agent Responsibilities
 
 When assisting with this configuration:
 
-### Before Making Changes
-1. **Identify the current environment** (personal vs work)
-2. **Determine if editing in the right location** (separate dir vs live dir)
-3. **Check if changes are environment-agnostic** or need branch-specific handling
-
 ### When Editing JSON Files
 1. **Always maintain alphabetical sorting** of keys
 2. **Preserve existing formatting style** (4-space indentation)
 3. **Validate JSON syntax** before completing changes
-4. **Provide before/after context** to show sorting is maintained
 
-### When Synchronizing Branches
-1. **List differences** between branches first
-2. **Identify environment-specific settings** that should remain separate
-3. **Propose merge strategy** before executing
-4. **Verify sorting** after merge operations
 
-### Best Practices
-- **Ask clarifying questions** about environment-specific settings
-- **Explain the impact** of changes before applying them
-- **Suggest testing steps** after significant changes
-- **Document non-obvious decisions** in commit messages or comments
 
 ## Workflow Examples
 
 ### Example: Adding a New Setting
 
 ```bash
-# 1. Work in separate directory (not the live VS Code User directory)
-cd ~/vscode-config-staging
+# 1. Work in separate directory (not the HOT directory)
+> cd ~/$CurTempDir/vscode-settings
 
 # 2. Edit settings.json - add new setting
 # 3. Sort JSON file
