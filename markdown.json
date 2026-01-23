@@ -6,9 +6,9 @@
 
 	"Task template": {
 		"prefix": "taskbox",
-        
+
 		"body": [
-			"- [ ] **?**"
+			"- [ ] **?** "
 		],
 		"description": "Insert task checkbox with bold question"
 	}
